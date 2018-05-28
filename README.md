@@ -77,7 +77,7 @@ along with GREAT.  If not, see <http://www.gnu.org/licenses/>.
 
 Alejandro Torres-Forne and Pablo Cerda-Duran
 
-Universitat de AVlencia
+Universitat de Valencia
 
 c/ Dr. Moliner, 50
 

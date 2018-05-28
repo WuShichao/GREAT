@@ -1,0 +1,64 @@
+#-------------------------------------------------------------------------
+# Example of local_settings file for linux computers with gcc compiler
+#-------------------------------------------------------------------------
+
+# set to 0 for debugging and 1 for production runs.
+DEBUG=0
+
+# make (with flags)
+MAKE = make
+
+# Preprocessor flags
+D_FLAGS = 
+
+# Flags for debugging, bound check ...
+ifeq ($(DEBUG),1)
+ FC_FLAGS_DEBUG = -Wall -O0 -g  -ffpe-trap=invalid,zero,overflow -finit-real=snan -finit-integer=10000000  -fcheck=bounds -fmax-errors=5 
+ CC_FLAGS_DEBUG = -Dtrapfe -Wall -O0 -g -Wextra -ansi
+ LD_FLAGS_DEBUG =  $(FC_FLAGS_DEBUG)
+ OPTIMIZED = 0
+ D_FLAGS += -DVERBOSE -DDEBUG
+else
+ FC_FLAGS_DEBUG =
+ CC_FLAGS_DEBUG =
+ LD_FLAGS_DEBUG =
+ DEBUG = 0 
+ OPTIMIZED = 1
+endif
+
+# Flags for optimized code
+ifeq ($(OPTIMIZED),1)
+ FC_FLAGS_OPTIMIZED = -O3 -g 
+ CC_FLAGS_OPTIMIZED = -O3 -g
+ LD_FLAGS_OPTIMIZED = -O3 -g
+else
+ FC_FLAGS_OPTIMIZED = -O0 -g
+ CC_FLAGS_OPTIMIZED = -O0 -g
+ LD_FLAGS_OPTIMIZED = -O0 -g
+endif
+
+# Flag for the fortran compiler indicating where to create modules (gfortran: -J, ifort: -module)
+MOD_FLAG = -J
+
+# Fortran 2003 compiler
+FC = gfortran 
+FC_FLAGS = $(FC_FLAGS_DEBUG) $(D_FLAGS) $(FC_FLAGS_PARALLEL) $(FC_FLAGS_OPTIMIZED) -ffree-line-length-none 
+FC_INCLUDES= 
+FC_LIB =  
+
+# C++ compiler
+CC = g++
+CC_FLAGS =  $(CC_FLAGS_DEBUG) $(D_FLAGS) $(CC_FLAGS_PARALLEL) $(CC_FLAGS_OPTIMIZED)
+CC_INCLUDES =  
+CC_LIB = 
+
+# Linker (add here lapack libraries)
+LD = gfortran 
+LD_FLAGS =  $(LD_FLAGS_DEBUG) $(D_FLAGS) $(LD_FLAGS_PARALLEL) $(LD_FLAGS_OPTIMIZED)
+LD_LIB = -lblas llapack
+
+# ar and ranlib to create libraries
+AR = ar -r
+RANLIB = ranlib
+
+

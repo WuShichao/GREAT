@@ -1,0 +1,50 @@
+l=2                          # Value of l (degree of the spherical harmonic decomposition)
+cowling=.true.               # Compute with cowling approximation
+
+cal_dphi=.false.             # Compute delta_phi
+
+mode=1                       # Mode approximation
+		   	     #    1: All modes
+    			     #    2: Compute P mode approximation
+    			     #    3: Compute G mode approximation 
+
+
+fmin=1.0d0                    # Minimum value of frequency for the eigenvalue search
+fmax=50.0d0                   # Maximum value of frequency for the eigenvalue search
+funits=2                      # Units for the frequency
+			      #     0: frequency code units (G=C=1 + cm), i.e. cm^-1
+			      #     1: frequency Hz
+			      #     2: angular frequency in code units (cm^-1)
+
+nwmax = 100                   #Number of frequencies for the coarse eigenfrequency search 
+logf_mode = .false.            #      .true.: Coarse search equally spaced in logarithm of f
+                              #      .false.: equally spaced in f
+tol = 1.0d-3                  # Tolerance for eigenvalue calculation
+maxiter = 50                  # Maximum number of iterations in eigenvalue calculation
+
+
+integration_mode=1            # Select how to integrate equations (only one option avaliable)
+                              #           1: Explicit integration for all equations (6x6)
+
+force_compute_n2=.true.       # Force the computation of N^2 even if in the files
+
+ggrav_mode=2                  # Select the ggrav computation formula
+                              #      1: ggrav = -dalpha_dr
+                              #      2: ggrav = dp_dr/(rho h)
+                              #      3: Mean value of 1 and 2 
+
+newtonian=.true.             # Enable newtonian calculation of ggrav
+
+ip_coeffs=4                  # Regularize first ip_coeff points
+
+
+# Parameters not used in the module
+restart=.false.              
+t_ini=0                 
+time_step=1                  
+input_mode=3                  
+interpolate_grid=.false.      
+int_factor=4                  
+
+
+			

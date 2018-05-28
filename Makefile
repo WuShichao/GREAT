@@ -1,7 +1,7 @@
 #---------------------------------
 BIN =
 SRC_TEST = test.f90
-LIB = libmode.a
+LIB = libgreat.a
 SRC1 = module_mode_integrator.f90 module_mode_analysis.f90
 SRC2 = module_background.f90 module_eigen.f90 
 SRC3 = 	module_param.f90 module_fast_inv.f90

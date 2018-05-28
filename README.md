@@ -21,11 +21,11 @@
 
 ##REQUIREMENTS:
 
--Linux of unix-like operating system.
+1. Linux of unix-like operating system.
 
--Modern fortran compiler (e.g. latest version of gfortran).
+2. Modern fortran compiler (e.g. latest version of gfortran).
 
--LAPACK (http://www.netlib.org/lapack/).
+3. LAPACK (http://www.netlib.org/lapack/).
 
 ##INSTALLATION:
 
@@ -55,17 +55,34 @@ To use the test code, execute /bin/test.
 
 Copyright (C) 2018 Alejandro Torres-Forne and Pablo Cerda-Duran
 
-Copyright (C) 2009 Anthony SCEMAMA for the file src/module_fast_inv.f90
+Copyright (C) 2009 Anthony SCEMAMA for the content of the file src/module_fast_inv.f90
+
+##LICENSE
+
+GREAT is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+GREAT is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with GREAT.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ##CONTACT:
 
 Alejandro Torres-Forne and Pablo Cerda-Duran
+
 Universitat de AVlencia
+
 c/ Dr. Moliner, 50
+
 E46100 Burjassot (Valencia), Spain
+
 alejandro.torres(at)uv.es
 
-##LICENSE
-
-Copy of GPL: gpl-3.0.txt
+pablo.cerda(at)uv.es

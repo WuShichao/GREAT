@@ -79,8 +79,8 @@ module module_param
      !>     1. Explicit integration for all equations (6x6)
      !>     2. Explicit integration & elliptic solver
      integer :: integration_mode
-     !> Force the computation of N^2 even if in the files
-     logical :: force_compute_n2
+     !> Use N^2 from files
+     logical :: use_precomputed_n2
      !Select the ggrav computation formula
      !> 1.     ggrav = -dalpha_dr
      !> 2.     ggrav = dp_dr/(rho h)
@@ -144,7 +144,7 @@ contains
 
     call get_integer_parameter ("integration_mode", param%integration_mode, parfile, ierr)
 
-    call get_logical_parameter ("force_compute_n2=", param%force_compute_n2, parfile, ierr)
+    call get_logical_parameter ("use_precomputed_n2=", param%use_precomputed_n2, parfile, ierr)
 
     call get_integer_parameter ("ggrav_mode", param%ggrav_mode, parfile, ierr)
 

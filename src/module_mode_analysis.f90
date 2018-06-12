@@ -90,7 +90,7 @@ contains
     
     ! ----------------------------
 
-    if (param%force_compute_n2) data%calculate_n2 = .true.
+    if (param%use_precomputed_n2) data%calculate_n2 = .false.
 
     if (param%cowling) then
        write (*,*)  "   Cowling aprox."

@@ -5,7 +5,7 @@
 ************************************************************************
 
   This code computes the oscillation modes (eigenmodes) of a spherically
-  symmetric self-gravitating object. It has been developed to study the 
+  symmetric self-gravitating object in gerenal relativity. It has been developed to study the 
   oscillation modes (p, g and f-modes) of proto-neutron stars formed in the 
   collapse of the cores of massive stars. A detailed description of the equations 
   implemented can be found at:

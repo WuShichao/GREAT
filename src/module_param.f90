@@ -91,6 +91,7 @@ module module_param
      !> regularize first ip_coeff points
      integer :: ip_coeffs
 
+     logical :: verb = .true.
   end type parameters_t
 
   public :: Read_parameters

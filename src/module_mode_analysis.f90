@@ -74,41 +74,43 @@ contains
     type (mode_coeff_t) :: coeff
 
 
+!    integer :: mtype
+
     ierr = 0
     
 
-    write (*, *) "-----------------------------------------------------------------"
-    write (*, *) data%nt,data%time," s"
-    write (*, *) "Shock location: ",data%iR,data%r(data%iR)
+    if (param%verb) write (*, *) "-----------------------------------------------------------------"
+    if (param%verb) write (*, *) data%nt,data%time," s"
+    if (param%verb) write (*, *) "Shock location: ",data%iR,data%r(data%iR)
 
 
     allocate (bc_func(1:param%nwmax))
     allocate (freqs(1:param%nwmax))
  
     ! ----Print Parameters -----------
-    write (*,*)  "Parameters: "
+    if (param%verb) write (*, *)  "Parameters: "
     
     ! ----------------------------
 
     if (param%use_precomputed_n2) data%calculate_n2 = .false.
 
     if (param%cowling) then
-       write (*,*)  "   Cowling aprox."
+       if (param%verb) write (*, *)  "   Cowling aprox."
     else
-       write (*,*)  "   No cowling"
+       if (param%verb) write (*, *)  "   No cowling"
     endif
-    write (*,*) "   ggrav_mode =",param%ggrav_mode
+    if (param%verb) write (*, *) "   ggrav_mode =",param%ggrav_mode
     if(param%cal_dphi) then
-       write (*,*) "   Calculating delta_phi"
+       if (param%verb) write (*, *) "   Calculating delta_phi"
     else
-       write (*,*) "   Not calculating delta_phi"
+       if (param%verb) write (*, *) "   Not calculating delta_phi"
     endif
-    write (*,*) "   iR, m= ",data%iR, data%m
+    if (param%verb) write (*, *) "   iR, m= ",data%iR, data%m
 
     if (param%newtonian) then
-       write (*,*) "   Newtonian calculation"
+       if (param%verb) write (*, *) "   Newtonian calculation"
     else
-       write (*,*) "   GR calculation"
+       if (param%verb) write (*, *) "   GR calculation"
     endif
     
  
@@ -206,7 +208,7 @@ contains
        endif
     case default
        write(*,*) "ERROR: perform_mode_analysis"
-       write (*, *) "invalid ggrav_mode = ", param%ggrav_mode
+       if (param%verb) write (*, *) "invalid ggrav_mode = ", param%ggrav_mode
        ierr = 10
        return
     end select
@@ -225,7 +227,7 @@ contains
        write (*,*)  "Calculating Brunt-Vaisala"
        data%n2 = data%alpha**2.0/data%phi**4.0 * data%ggrav * data%Bstar
     else
-       write (*,*)  "Using Brunt-Vaisala from file"
+       if (param%verb) write (*, *)  "Using Brunt-Vaisala from file"
     endif
     !.... Lamb frequency squared
     data%lamb2 = data%alpha**2/data%phi**4.0*data%c_sound_squared &
@@ -237,13 +239,13 @@ contains
     ! -------- Select calculation mode ---------------
     select case (param%mode)
     case (1) ! Full analysis
-       write (*,*) "Analyzing all modes"
+       if (param%verb) write (*, *) "Analyzing all modes"
     case (2) ! Only p-modes (set buoyancy to zero)
-       write (*,*)  "Analyzing p-modes"
+       if (param%verb) write (*, *)  "Analyzing p-modes"
        data%Bstar = 0.0d0
        data%n2 = 0.0d0
     case (3) ! Only g-modes (set cs2 to infinity and recompute Bstar)
-       write (*,*)  "Analyzing g-modes"
+       if (param%verb) write (*, *)  "Analyzing g-modes"
        data%inv_cs2 = 0.0d0
        where (abs(data%rho*data%h)>0.0d0) &
             data%Bstar = data%de_dr /data%rho/data%h
@@ -258,8 +260,8 @@ contains
     !---- Check for errors in data-----
     call Check_for_errors_bg (data, ierr)
     if (ierr.ne.0) then
-       write (*,*) "ERROR in perform_data_analysis"
-       write (*, *) "data contains nans. ierr=", ierr
+       if (param%verb) write (*, *) "ERROR in perform_data_analysis"
+       if (param%verb) write (*, *) "data contains nans. ierr=", ierr
        return
     endif
 
@@ -267,12 +269,12 @@ contains
     call Initialize_eigenvectors (data, eigen, ierr)
 
     call Initialize_coefficients_matrix (data, param, coeff, ierr)
-    print*, "coeff%n =", coeff%n
+    if (param%verb) write (*, *) "coeff%n =", coeff%n
 
 
 
     ! ------------------- Coarse search for eigenvalues ----------------------
-    write (*,*)  "Coarse frequency search"
+    if (param%verb) write (*, *)  "Coarse frequency search"
     loop_frequency: do nw = 1, param%nwmax !Frequency loop
 
        if (param%logf_mode) then
@@ -291,7 +293,7 @@ contains
 
     !-------------------- Fine search for eigenvalues ----------- ----------------
 
-    write (*,*)  "Fine frequency search"
+    if (param%verb) write (*, *)  "Fine frequency search"
     ne = 0
     loop_frequency2: do nw=1,param%nwmax-1 
        if (bc_func(nw)*bc_func(nw+1).lt.0.0) then
@@ -312,18 +314,20 @@ contains
              call Normalize_eigenvectors (eigen, ierr)
              call Output_eigenvectors (data, param, eigen, ierr)
              write (*,*)  ne, nw, xm, xb-xa, "(",(xb-xa)/xm,")", ym
+             if (param%verb) write (*, *)  ne, nw, xm, xb-xa, "(",(xb-xa)/xm,")", ym!, mtype
           elseif (type.eq.1) then
-             write (*,*)  ne, nw, xm, xb-xa, "(",(xb-xa)/xm,")", ym, " <----- asymptote"
+             if (param%verb) write (*, *)  ne, nw, xm, xb-xa, "(",(xb-xa)/xm,")", ym, " <----- asymptote"
           elseif (type.eq.2) then
-             write (*,*)  ne, nw, xm, xb-xa, "(",(xb-xa)/xm,")", ym, " <----- not converged"
+             if (param%verb) write (*, *)  ne, nw, xm, xb-xa, "(",(xb-xa)/xm,")", ym, " <----- not converged"
           endif
           
        endif
     enddo loop_frequency2
 
     nemax = ne 
-    
-    print*, "Eigenvalues found: ", nemax
+    if (present(nemax_opt)) nemax_opt = nemax
+
+    if (param%verb) write (*, *) "Eigenvalues found: ", nemax
     
     call Free_eigenvectors (eigen, ierr)
 
@@ -391,8 +395,8 @@ contains
     case (2) ! angular frequency in cm^-1
        w2 = freq**2   
     case default
-       write (*, *) "ERROR in integrate_eigenfucntion_equation"
-       write (*, *) "funits = ", param%funits
+       if (param%verb) write (*, *) "ERROR in integrate_eigenfucntion_equation"
+       if (param%verb) write (*, *) "funits = ", param%funits
        return
        ierr = 1234
     end select
@@ -457,7 +461,7 @@ contains
        enddo       
 
        if (.not.converged) then
-!          write (*,*) "ERROR: shooting method not converged",i,freq,abs(x-x1)/abs(x1),x,x1
+!          if (param%verb) write (*, *) "ERROR: shooting method not converged",i,freq,abs(x-x1)/abs(x1),x,x1
           ierr = 500
        endif
 
@@ -580,7 +584,7 @@ contains
           endif
        enddo
        if (.not.converged) then
-!          write (*,*) "ERROR: shooting method not converged", freq,sqrt(errorx**2+errorz**2)
+!          if (param%verb) write (*, *) "ERROR: shooting method not converged", freq,sqrt(errorx**2+errorz**2)
           ierr = 500
        endif
        
@@ -675,9 +679,9 @@ contains
     enddo
 
     if (error) then
-!       write (*,*)  "Bisection not converged", xm, xa, xb, ym, ya, yb &
+!       if (param%verb) write (*, *)  "Bisection not converged", xm, xa, xb, ym, ya, yb &
 !            , ymean, ymean_old
-!       write (*,*)  abs(xb-xa)/abs(xb)
+!       if (param%verb) write (*, *)  abs(xb-xa)/abs(xb)
 !       read*
        type = 2
        ierr = 700
@@ -696,12 +700,12 @@ contains
 
     write (*, *) "***********************************************"
     write (*, *) "ERROR:"
-
+    
     select case (ierr)
     case (500)
-       write (*,*) "ERROR: shooting method not converged"
+       write (*, *) "ERROR: shooting method not converged"
     case (700)
-       write (*,*)  "Bisection not converged"
+       write (*, *)  "Bisection not converged"
     case default
        write (*, *) " ierr =", ierr
     end select

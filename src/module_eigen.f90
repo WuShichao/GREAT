@@ -145,7 +145,7 @@ contains
 
     ierr = 0
 
-    factor = max(maxval(abs(eigen%nr)), maxval(abs(eigen%nr/eigen%r)))
+    factor = max(maxval(abs(eigen%nr)), maxval(abs(eigen%np/eigen%r)))
 
     eigen%nr = eigen%nr / factor
     eigen%np = eigen%np / factor

@@ -241,7 +241,7 @@ contains
        open (22, file =fileout,status='old', position='append', action='write')
     endif
 
-    write (22, "(E25.15,I25,E25.15)") data%time, eigen%ne, eigen%freq
+    write (22, "(E25.15,I25,3E25.15,I25)") data%time, eigen%ne, eigen%freq, param%pfrac, param%gfrac
 
     close (22)
 

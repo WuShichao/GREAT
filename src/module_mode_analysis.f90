@@ -44,7 +44,7 @@ contains
 
  ! ==============================================================================================================
  ! ==============================================================================================================
-  subroutine Perform_mode_analysis (data, param, ierr)
+  subroutine Perform_mode_analysis (data, param, ierr, nemax_opt, freq_opt, ene_opt)
 
     implicit none
 
@@ -52,6 +52,9 @@ contains
     type(BGData_t), intent (inout) :: data
     type(parameters_t), intent (inout) :: param
     integer, intent (out) :: ierr
+    integer, intent (out), optional :: nemax_opt
+    real*8, intent (inout), optional, dimension (:) :: freq_opt
+    real*8, intent (inout), optional, dimension (:,:) :: ene_opt
     ! ----------------------------
 
     integer ::  nw,i
@@ -184,6 +187,7 @@ contains
     ! ... adiabatic index 
     where (abs(data%p)>0.0d0) & ! non-zero P
          data%gamma_one = data%rho*data%h*data%c_sound_squared / data%p
+    data%gamma_one = data%gamma_one / (param%pfrac + 1.0d-20)
     ! ... gravitational acceleration
     select case (param%ggrav_mode)
     case (1)
@@ -214,17 +218,18 @@ contains
     end select
     !..... Inverse of sound speed square
     where (abs(data%c_sound_squared)>0.0d0)
-       data%inv_cs2 = 1.0d0 / data%c_sound_squared
+       data%inv_cs2 = 1.0d0 / data%c_sound_squared *param%pfrac
     elsewhere
        data%inv_cs2 = huge(1.0d0)
     end where
+    data%c_sound_squared  = data%c_sound_squared / (param%pfrac + 1.0d-20)
     !.... Buoyancy 
     where (abs(data%rho*data%h)>0.0d0) &
-         data%Bstar = data%de_dr /data%rho/data%h &
-         - data%dp_dr/data%rho/data%h*data%inv_cs2
+         data%Bstar = (data%de_dr /data%rho/data%h &
+         - data%dp_dr/data%rho/data%h*data%inv_cs2) * param%gfrac
     !.... Brunt Vaisala frequency
     if (data%calculate_n2)  then
-       write (*,*)  "Calculating Brunt-Vaisala"
+       if (param%verb) write (*, *)  "Calculating Brunt-Vaisala"
        data%n2 = data%alpha**2.0/data%phi**4.0 * data%ggrav * data%Bstar
     else
        if (param%verb) write (*, *)  "Using Brunt-Vaisala from file"
@@ -295,6 +300,8 @@ contains
 
     if (param%verb) write (*, *)  "Fine frequency search"
     ne = 0
+    if (present(freq_opt)) freq_opt = 0.0d0
+    if (present(ene_opt)) ene_opt = 0.0d0
     loop_frequency2: do nw=1,param%nwmax-1 
        if (bc_func(nw)*bc_func(nw+1).lt.0.0) then
 
@@ -311,10 +318,17 @@ contains
              eigen%nw = nw
              eigen%freq = xm
              eigen%ne = ne
+             if (present(freq_opt)) freq_opt (ne) = xm             
              call Normalize_eigenvectors (eigen, ierr)
-             call Output_eigenvectors (data, param, eigen, ierr)
-             write (*,*)  ne, nw, xm, xb-xa, "(",(xb-xa)/xm,")", ym
-             if (param%verb) write (*, *)  ne, nw, xm, xb-xa, "(",(xb-xa)/xm,")", ym!, mtype
+             if (present(ene_opt)) then
+                do i = 1, data%iR
+                   ene_opt (i, ne) = data%rho (i) * ( eigen%nr (i)**2 &
+                        + param%l*(param%l+1) * (eigen%np (i) / eigen%r (i))**2 )
+                enddo
+                ene_opt (:, ne) = ene_opt (:, ne) / maxval(abs(ene_opt (:, ne)))
+             endif
+             if (param%output_eigen) call Output_eigenvectors (data, param, eigen, ierr)
+             if (param%verb) write (*, *)  ne, nw, xm, xb-xa, "(",(xb-xa)/xm,")", ym
           elseif (type.eq.1) then
              if (param%verb) write (*, *)  ne, nw, xm, xb-xa, "(",(xb-xa)/xm,")", ym, " <----- asymptote"
           elseif (type.eq.2) then
@@ -692,6 +706,8 @@ contains
   end subroutine bisection
 
 
+  ! ==============================================================================================================
+  ! ==============================================================================================================  
   subroutine Print_error_message (ierr)
 
     integer, intent (in) :: ierr

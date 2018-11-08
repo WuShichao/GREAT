@@ -91,7 +91,17 @@ module module_param
      !> regularize first ip_coeff points
      integer :: ip_coeffs
 
+     !> Parameter to control the transition between full calculation (pfrac=1)
+     !> and the p-mode limit (pfrac=0)
+     real*8 :: pfrac = 1.0d0
+     !> Parameter to control the transition between full calculation (gfrac=1)
+     !> and the g-mode limit (gfrac=0)
+     real*8 :: gfrac = 1.0d0
+     !> Generate files outputing eigenvalue frequencies and eigenfunctions
+     logical :: output_eigen = .true.
+     !> Verbose mode
      logical :: verb = .true.
+
   end type parameters_t
 
   public :: Read_parameters

@@ -1,6 +1,6 @@
 ************************************************************************
 
-#GREAT = General Relativistic Eigenmode Analysis Tool
+# GREAT = General Relativistic Eigenmode Analysis Tool
 
 ************************************************************************
 
@@ -19,7 +19,7 @@
   how to call the routines in the library.
 
 
-##REQUIREMENTS:
+## REQUIREMENTS:
 
 1. Linux of unix-like operating system.
 
@@ -27,7 +27,7 @@
 
 3. LAPACK (http://www.netlib.org/lapack/).
 
-##INSTALLATION:
+## INSTALLATION:
 
 1. Create a "local_settings" file necessary to setup the Makefile. A working
     example for linux with a gnu compiler can be found at "local_settings_example".
@@ -38,7 +38,7 @@
 3. To compile the test code (src/test.f90) execute "make test". The executable
     bin/test will be created.
  
-##USAGE:
+## USAGE:
 
 Create a "parameters" file. An example can be found at "parameters_test".
 
@@ -51,13 +51,13 @@ To use it as a library, compile and link your code adding:
 To use the test code, execute /bin/test.
 
 
-##CREDITS
+## CREDITS
 
 Copyright (C) 2018 Alejandro Torres-Forne and Pablo Cerda-Duran
 
 Copyright (C) 2009 Anthony SCEMAMA for the content of the file src/module_fast_inv.f90
 
-##LICENSE
+## LICENSE
 
 GREAT is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -73,7 +73,7 @@ You should have received a copy of the GNU General Public License
 along with GREAT.  If not, see <http://www.gnu.org/licenses/>.
 
 
-##CONTACT:
+## CONTACT:
 
 Alejandro Torres-Forne and Pablo Cerda-Duran
 

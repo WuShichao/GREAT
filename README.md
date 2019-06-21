@@ -10,9 +10,9 @@
   collapse of the cores of massive stars. A detailed description of the equations 
   implemented can be found at:
 
-  A. Torres-Forne, P. Cerda-Duran, A. Passamonti & J.A. Font, MNRAS, 474, 5272 (2018)
+  A. Torres-Forne, P. Cerda-Duran, A. Passamonti & J.A. Font, MNRAS, https://doi.org/10.1093/mnras/stx3067 (2017)
   
-  A. Torres-Forne, P. Cerda-Duran, A. Passamonti & J.A. Font, in prep. (2018)
+  A. Torres-Forne, P. Cerda-Duran, A. Passamonti & J.A. Font, MNRAS, https://doi.org/10.1093/mnras/sty2854 (2018)
 
   The code comes as a library, which should be called from a main code providing
   the data to be analyzed. We provide a test code (src/test.f90), as an example of

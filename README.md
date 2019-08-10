@@ -4,19 +4,21 @@
 
 ************************************************************************
 
-  This code computes the oscillation modes (eigenmodes) of a spherically
-  symmetric self-gravitating object in gerenal relativity. It has been developed to study the 
-  oscillation modes (p, g and f-modes) of proto-neutron stars formed in the 
-  collapse of the cores of massive stars. A detailed description of the equations 
-  implemented can be found at:
+This code computes the oscillation modes (eigenmodes) of a spherically
+symmetric self-gravitating object in gerenal relativity. It has been developed to study the 
+oscillation modes (p, g and f-modes) of proto-neutron stars formed in the 
+collapse of the cores of massive stars. A detailed description of the equations 
+implemented can be found at:
 
-  A. Torres-Forne, P. Cerda-Duran, A. Passamonti & J.A. Font, MNRAS, https://doi.org/10.1093/mnras/stx3067 (2017)
-  
-  A. Torres-Forne, P. Cerda-Duran, A. Passamonti & J.A. Font, MNRAS, https://doi.org/10.1093/mnras/sty2854 (2018)
+- A. Torres-Forne, P. Cerda-Duran, A. Passamonti & J.A. Font, MNRAS, https://doi.org/10.1093/mnras/stx3067 (2017)
 
-  The code comes as a library, which should be called from a main code providing
-  the data to be analyzed. We provide a test code (src/test.f90), as an example of
-  how to call the routines in the library.
+- A. Torres-Forne, P. Cerda-Duran, A. Passamonti & J.A. Font, MNRAS, https://doi.org/10.1093/mnras/sty2854 (2018)
+
+- A. Torres-Forné, P. Cerdá-Durán, M. Obergaulinger, B. Müller, and J. A. Font, PRL, https://doi.org/10.1103/PhysRevLett.123.051102 (2019) 
+
+The code comes as a library, which should be called from a main code providing
+the data to be analyzed. We provide a test code (src/test.f90), as an example of
+how to call the routines in the library.
 
 
 ## REQUIREMENTS:
